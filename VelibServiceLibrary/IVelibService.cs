@@ -3,12 +3,10 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Runtime.Serialization;
 using System.ServiceModel;
-using System.ServiceModel.Web;
 using System.Text;
 
-namespace VelibGatewayWebService
+namespace VelibServiceLibrary
 {
-  
     [ServiceContract]
     public interface IVelibService
     {
@@ -20,7 +18,7 @@ namespace VelibGatewayWebService
         int GetVelibsAvailableForStation(string city, string station);
 
 
-      
+
 
     }
 
@@ -32,7 +30,7 @@ namespace VelibGatewayWebService
         string name = "station";
         int available_bikes = 0;
 
-        
+
 
         [DataMember]
         public string Name

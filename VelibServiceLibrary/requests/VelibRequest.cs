@@ -6,7 +6,7 @@ using System.Linq;
 using System.Net;
 using System.Web;
 
-namespace VelibGatewayWebService.requests
+namespace VelibServiceLibrary.requests
 {
     [Serializable]
     public class VelibRequest
@@ -23,7 +23,7 @@ namespace VelibGatewayWebService.requests
         /// <returns>the list of stations for the given city</returns>
         public IList<Station> getStationsForCity(string city)
         {
-            WebRequest request = WebRequest.Create("https://api.jcdecaux.com/vls/v1/stations?contract=" + city + "&apiKey=" + API_KEY);
+            WebRequest request = WebRequest.Create("https://api.jcdecaux.com/vls/v1/stations?contract_name=" + city + "&apiKey=" + API_KEY);
             StreamReader reader = null;
             WebResponse response = null;
             String result = "";

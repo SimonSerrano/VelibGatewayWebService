@@ -1,14 +1,16 @@
-﻿using System.Collections.Generic;
-using VelibGatewayWebService.requests;
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Runtime.Serialization;
+using System.ServiceModel;
+using System.Text;
+using VelibServiceLibrary.requests;
 
-namespace VelibGatewayWebService
+namespace VelibServiceLibrary
 {
-    
+   
     public class VelibService : IVelibService
     {
-        
-
-       
         /// <summary>
         /// Return the number of available bikes at a given station in a given city
         /// </summary>

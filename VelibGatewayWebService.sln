@@ -3,7 +3,12 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 15
 VisualStudioVersion = 15.0.28307.329
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "VelibGatewayWebService", "VelibGatewayWebService.csproj", "{40E57F35-F149-4A3E-ACD7-8F1387C91778}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ClientConsoleVelibGateway", "..\ClientConsoleVelibGateway\ClientConsoleVelibGateway.csproj", "{D543359E-E2BF-4C66-993B-DB4B1AD478BA}"
+	ProjectSection(ProjectDependencies) = postProject
+		{4244ACAE-2F4C-49FF-9B20-7101BE260A8A} = {4244ACAE-2F4C-49FF-9B20-7101BE260A8A}
+	EndProjectSection
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "VelibServiceLibrary", "VelibServiceLibrary\VelibServiceLibrary.csproj", "{4244ACAE-2F4C-49FF-9B20-7101BE260A8A}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -11,10 +16,14 @@ Global
 		Release|Any CPU = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
-		{40E57F35-F149-4A3E-ACD7-8F1387C91778}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{40E57F35-F149-4A3E-ACD7-8F1387C91778}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{40E57F35-F149-4A3E-ACD7-8F1387C91778}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{40E57F35-F149-4A3E-ACD7-8F1387C91778}.Release|Any CPU.Build.0 = Release|Any CPU
+		{D543359E-E2BF-4C66-993B-DB4B1AD478BA}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D543359E-E2BF-4C66-993B-DB4B1AD478BA}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D543359E-E2BF-4C66-993B-DB4B1AD478BA}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D543359E-E2BF-4C66-993B-DB4B1AD478BA}.Release|Any CPU.Build.0 = Release|Any CPU
+		{4244ACAE-2F4C-49FF-9B20-7101BE260A8A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{4244ACAE-2F4C-49FF-9B20-7101BE260A8A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{4244ACAE-2F4C-49FF-9B20-7101BE260A8A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{4244ACAE-2F4C-49FF-9B20-7101BE260A8A}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

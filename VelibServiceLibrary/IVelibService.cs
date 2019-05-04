@@ -15,9 +15,10 @@ namespace VelibServiceLibrary
         IList<Station> GetVelibStationsInCity(string city);
 
         [OperationContract]
-        int GetVelibsAvailableForStation(string city, string station);
+        int GetVelibsAvailableForStation(string city, int station_number);
 
-
+        [OperationContract]
+        IList<String> GetCities();
 
 
     }
@@ -29,6 +30,7 @@ namespace VelibServiceLibrary
     {
         string name = "station";
         int available_bikes = 0;
+        int station_number = 0;
 
 
 
@@ -44,6 +46,13 @@ namespace VelibServiceLibrary
         {
             get { return available_bikes; }
             set { available_bikes = value; }
+        }
+
+        [DataMember]
+        public int StationNumber
+        {
+            get { return station_number; }
+            set { station_number = value; }
         }
     }
 }

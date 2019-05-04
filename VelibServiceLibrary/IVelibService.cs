@@ -4,21 +4,38 @@ using System.Linq;
 using System.Runtime.Serialization;
 using System.ServiceModel;
 using System.Text;
+using System.Threading.Tasks;
 
 namespace VelibServiceLibrary
 {
     [ServiceContract]
     public interface IVelibService
     {
-
+        /// <summary>
+        /// Lists all the stations in a given city, synchronous
+        /// </summary>
+        /// <param name="city">the city from which to list the stations</param>
+        /// <returns>the list of stations in the given city</returns>
         [OperationContract]
         IList<Station> GetVelibStationsInCity(string city);
 
+        /// <summary>
+        /// Return the number of available bikes at a given station in a given city, synchronous
+        /// </summary>
+        /// <param name="city">the city to get the station from</param>
+        /// <param name="station_number">the station where to count the number of available bikes</param>
+        /// <returns>the number of available bikes at the given station in the given city</returns>
         [OperationContract]
         int GetVelibsAvailableForStation(string city, int station_number);
 
+        /// <summary>
+        /// Lists all the cities where JCDecaux is implemented, synchronous
+        /// </summary>
+        /// <returns>The list of cities</returns>
         [OperationContract]
         IList<String> GetCities();
+
+        
 
 
     }

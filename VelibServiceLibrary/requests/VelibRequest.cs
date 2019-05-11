@@ -9,13 +9,10 @@ using System.Web;
 
 namespace VelibServiceLibrary.requests
 {
-    
     public class VelibRequest
     {
         private static readonly string API_KEY = "e561d2fbe2894d1a32eab3672038e981d98cda87";
-    
 
-        
 
         /// <summary>
         /// Lists all the stations for a given city, synchronous
@@ -24,7 +21,8 @@ namespace VelibServiceLibrary.requests
         /// <returns>the list of stations for the given city</returns>
         public IList<Station> getStationsForCity(string city)
         {
-            WebRequest request = WebRequest.Create("https://api.jcdecaux.com/vls/v1/stations?contract_name=" + city + "&apiKey=" + API_KEY);
+            WebRequest request = WebRequest.Create("https://api.jcdecaux.com/vls/v1/stations?contract_name=" + city +
+                                                   "&apiKey=" + API_KEY);
             StreamReader reader = null;
             WebResponse response = null;
             String result = "";
@@ -42,8 +40,34 @@ namespace VelibServiceLibrary.requests
             {
                 Console.WriteLine(e);
             }
-            return ParseStation(city,result);
 
+            return ParseStations(city, result);
+        }
+
+        public Station GetStationData(int station_number, string contract_name)
+        {
+            WebRequest request = WebRequest.Create("https://api.jcdecaux.com/vls/v1/stations/" + station_number +
+                                                   "?contract=" + contract_name +
+                                                   "&apiKey=" + API_KEY);
+            StreamReader reader = null;
+            WebResponse response = null;
+            string result = "";
+            try
+            {
+                response = request.GetResponse();
+                Stream dataStream = response.GetResponseStream();
+                reader = new StreamReader(dataStream);
+                result = reader.ReadToEnd();
+                reader.Close();
+                dataStream.Close();
+                response.Close();
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e);
+            }
+
+            return ParseStation(result);
         }
 
         /// <summary>
@@ -53,39 +77,68 @@ namespace VelibServiceLibrary.requests
         /// <returns>the list of stations for the given city</returns>
         public Task<IList<Station>> getStationsForCityAsync(string city)
         {
-            return Task<IList<Station>>.Run(() =>
-            {
-                return getStationsForCity(city);
-            });
+            return Task<IList<Station>>.Run(() => { return getStationsForCity(city); });
         }
 
-        private IList<Station> ParseStation(string city, string data)
+
+        private IList<Station> ParseStations(string city, string data)
         {
             JArray array = null;
             IList<Station> res = new List<Station>();
             try
             {
                 array = JArray.Parse(data);
-            }catch(Exception e)
+            }
+            catch (Exception e)
             {
                 return res;
             }
 
             int size = array.Count();
-            for(int i=0; i<size; ++i)
+            for (int i = 0; i < size; ++i)
             {
-                string name = (string)((JObject)array[i])["name"];
-                int available_bikes = (int)((JObject)array[i])["available_bikes"];
-                int station_number = (int)((JObject)array[i])["number"];
+                string name = (string) ((JObject) array[i])["name"];
+                int available_bikes = (int) ((JObject) array[i])["available_bikes"];
+                int station_number = (int) ((JObject) array[i])["number"];
+                string station_status = (string) ((JObject) array[i])["status"];
+                string contract_name = (string) ((JObject) array[i])["contract_name"];
                 Console.WriteLine(name);
                 Station station = new Station();
                 station.Name = name;
                 station.AvailableBikes = available_bikes;
                 station.StationNumber = station_number;
+                station.Status = station_status;
+                station.ContractName = contract_name;
                 res.Add(station);
             }
 
             return res;
+        }
+
+        private Station ParseStation(string data)
+        {
+            JObject obj = null;
+            try
+            {
+                obj = JObject.Parse(data);
+            }
+            catch (Exception e)
+            {
+                return null;
+            }
+            string name = (string) obj["name"];
+            int available_bikes = (int) obj["available_bikes"];
+            int station_number = (int) obj["number"];
+            string station_status = (string) obj["status"];
+            string contract_name = (string) obj["contract_name"];
+            Console.WriteLine(name);
+            Station station = new Station();
+            station.Name = name;
+            station.AvailableBikes = available_bikes;
+            station.StationNumber = station_number;
+            station.Status = station_status;
+            station.ContractName = contract_name;
+            return station;
         }
 
         /// <summary>
@@ -107,10 +160,12 @@ namespace VelibServiceLibrary.requests
                 reader.Close();
                 dataStream.Close();
                 response.Close();
-            }catch(Exception e)
+            }
+            catch (Exception e)
             {
                 Console.WriteLine(e);
             }
+
             return ParseCities(result);
         }
 
@@ -120,10 +175,7 @@ namespace VelibServiceLibrary.requests
         /// <returns>The list of cities</returns>
         public Task<IList<string>> GetCitiesAsync()
         {
-            return Task<IList<string>>.Run(() =>
-            {
-                return GetCities();
-            });
+            return Task<IList<string>>.Run(() => { return GetCities(); });
         }
 
         private IList<string> ParseCities(string result)
@@ -133,15 +185,18 @@ namespace VelibServiceLibrary.requests
             try
             {
                 array = JArray.Parse(result);
-            }catch (Exception e)
+            }
+            catch (Exception e)
             {
                 return cities;
             }
+
             int size = array.Count();
-            for(int i=0; i<size; ++i)
+            for (int i = 0; i < size; ++i)
             {
-                cities.Add((string)((JObject)array[i])["name"]);
+                cities.Add((string) ((JObject) array[i])["name"]);
             }
+
             return cities;
         }
 
@@ -153,7 +208,8 @@ namespace VelibServiceLibrary.requests
         /// <returns>the number of available bikes at the given station in the given city</returns>
         public int getAvalaibleBikes(string city, int station_number)
         {
-            WebRequest request = WebRequest.Create("https://api.jcdecaux.com/vls/v1/stations/" + station_number + "?contract=" + city + "&apiKey=" + API_KEY);
+            WebRequest request = WebRequest.Create("https://api.jcdecaux.com/vls/v1/stations/" + station_number +
+                                                   "?contract=" + city + "&apiKey=" + API_KEY);
             StreamReader reader = null;
             WebResponse response = null;
             String result = "";
@@ -171,6 +227,7 @@ namespace VelibServiceLibrary.requests
             {
                 Console.WriteLine(e);
             }
+
             return ParseAvailableBikes(result);
         }
 
@@ -182,10 +239,7 @@ namespace VelibServiceLibrary.requests
         /// <returns>the number of available bikes at the given station in the given city</returns>
         public Task<int> getAvalaibleBikesAsync(string city, int station_number)
         {
-            return Task<int>.Run(() =>
-            {
-                return getAvalaibleBikes(city, station_number);
-            });
+            return Task<int>.Run(() => { return getAvalaibleBikes(city, station_number); });
         }
 
 
@@ -201,7 +255,8 @@ namespace VelibServiceLibrary.requests
             {
                 return -1;
             }
-            available_bikes = (int)jobject["available_bikes"];
+
+            available_bikes = (int) jobject["available_bikes"];
             return available_bikes;
         }
     }

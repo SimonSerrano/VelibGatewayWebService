@@ -29,47 +29,66 @@ namespace VelibServiceLibrary
         int GetVelibsAvailableForStation(string city, int station_number);
 
         /// <summary>
+        /// Return the data of a station
+        /// </summary>
+        /// <param name="station_number">the city to get the station from</param>
+        /// <param name="contract_name">the station where to count the number of available bikes</param>
+        /// <returns>the number of available bikes at the given station in the given city</returns>
+        [OperationContract]
+        Station GetStationData(int station_number, string contract_name);
+
+        /// <summary>
         /// Lists all the cities where JCDecaux is implemented, synchronous
         /// </summary>
         /// <returns>The list of cities</returns>
         [OperationContract]
         IList<String> GetCities();
-
-        
-
-
     }
-
 
 
     [DataContract]
     public class Station
     {
         string name = "station";
+        string status = "unknown";
+        string contract_name = "unknown";
         int available_bikes = 0;
         int station_number = 0;
-
 
 
         [DataMember]
         public string Name
         {
-            get { return name; }
-            set { name = value; }
+            get => name;
+            set => name = value;
         }
 
         [DataMember]
         public int AvailableBikes
         {
-            get { return available_bikes; }
-            set { available_bikes = value; }
+            get => available_bikes;
+            set => available_bikes = value;
         }
 
         [DataMember]
         public int StationNumber
         {
-            get { return station_number; }
-            set { station_number = value; }
+            get => station_number;
+            set => station_number = value;
+        }
+
+        [DataMember]
+        public string Status
+        {
+            get => status;
+            set => status = value;
+        }
+
+        [DataMember]
+        public string ContractName
+        {
+            get => contract_name;
+            set => contract_name = value;
         }
     }
 }

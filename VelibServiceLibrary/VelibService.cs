@@ -3,16 +3,18 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Runtime.Serialization;
 using System.ServiceModel;
+using System.ServiceModel.Activation;
 using System.Text;
 using System.Threading.Tasks;
 using VelibServiceLibrary.requests;
 
 namespace VelibServiceLibrary
 {
-   
+    
     public class VelibService : IVelibService
     {
         /// <inheritdoc />
+        
         public int GetVelibsAvailableForStation(string city, int station_number)
         {
             VelibRequest request = new VelibRequest();

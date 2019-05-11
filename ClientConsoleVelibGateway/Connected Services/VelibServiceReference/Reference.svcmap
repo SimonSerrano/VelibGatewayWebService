@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ReferenceGroup xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" ID="c8b21042-5913-4dfd-8de8-9e46be538730" xmlns="urn:schemas-microsoft-com:xml-wcfservicemap">
+  <ClientOptions>
+    <GenerateAsynchronousMethods>false</GenerateAsynchronousMethods>
+    <GenerateTaskBasedAsynchronousMethod>true</GenerateTaskBasedAsynchronousMethod>
+    <EnableDataBinding>true</EnableDataBinding>
+    <ExcludedTypes />
+    <ImportXmlTypes>false</ImportXmlTypes>
+    <GenerateInternalTypes>false</GenerateInternalTypes>
+    <GenerateMessageContracts>false</GenerateMessageContracts>
+    <NamespaceMappings />
+    <CollectionMappings />
+    <GenerateSerializableTypes>true</GenerateSerializableTypes>
+    <Serializer>Auto</Serializer>
+    <UseSerializerForFaults>true</UseSerializerForFaults>
+    <ReferenceAllAssemblies>true</ReferenceAllAssemblies>
+    <ReferencedAssemblies />
+    <ReferencedDataContractTypes />
+    <ServiceContractMappings />
+  </ClientOptions>
+  <MetadataSources>
+    <MetadataSource Address="http://localhost:8733/Velib/VelibServiceLibrary/VelibService/mex" Protocol="mex" SourceId="1" />
+  </MetadataSources>
+  <Metadata>
+    <MetadataFile FileName="service.wsdl" MetadataType="Wsdl" ID="221a17f6-2c13-4614-a864-deaf4190a391" SourceId="1" SourceUrl="http://localhost:8733/Velib/VelibServiceLibrary/VelibService/mex" />
+    <MetadataFile FileName="service.xsd" MetadataType="Schema" ID="aa777c7c-7e96-4111-969b-4cc72cae234d" SourceId="1" SourceUrl="http://localhost:8733/Velib/VelibServiceLibrary/VelibService/mex" />
+    <MetadataFile FileName="service1.xsd" MetadataType="Schema" ID="7694dacd-8eb4-4eaa-89db-727e4497883f" SourceId="1" SourceUrl="http://localhost:8733/Velib/VelibServiceLibrary/VelibService/mex" />
+    <MetadataFile FileName="VelibServiceLibrary.xsd" MetadataType="Schema" ID="7ab76ec4-5c24-4b08-954c-8f093e862828" SourceId="1" SourceUrl="http://localhost:8733/Velib/VelibServiceLibrary/VelibService/mex" />
+    <MetadataFile FileName="Arrays.xsd" MetadataType="Schema" ID="374c7892-8d80-4739-805d-de87562a3a4d" SourceId="1" SourceUrl="http://localhost:8733/Velib/VelibServiceLibrary/VelibService/mex" />
+  </Metadata>
+  <Extensions>
+    <ExtensionFile FileName="configuration91.svcinfo" Name="configuration91.svcinfo" />
+    <ExtensionFile FileName="configuration.svcinfo" Name="configuration.svcinfo" />
+  </Extensions>
+</ReferenceGroup>

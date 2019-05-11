@@ -24,6 +24,8 @@ namespace VelibServiceLibraryHost
                 // Step 3: Add a service endpoint.
                 selfHost.AddServiceEndpoint(typeof(IVelibService), new WSHttpBinding(), "VelibService");
 
+                selfHost.AddServiceEndpoint(typeof(IVelibService), new BasicHttpBinding(), "");
+
                 // Step 4: Enable metadata exchange.
                 ServiceMetadataBehavior smb = new ServiceMetadataBehavior();
                 smb.HttpGetEnabled = true;

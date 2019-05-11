@@ -7,16 +7,20 @@ using System.ServiceModel.Activation;
 using System.Text;
 using System.Threading.Tasks;
 using VelibServiceLibrary.requests;
+using VelibServiceLibrary.utils;
 
 namespace VelibServiceLibrary
 {
     
     public class VelibService : IVelibService
     {
+        private Cache cache = new Cache();
+
         /// <inheritdoc />
-        
         public int GetVelibsAvailableForStation(string city, int station_number)
         {
+
+
             VelibRequest request = new VelibRequest();
             return request.getAvalaibleBikes(city, station_number);
         }
@@ -26,31 +30,55 @@ namespace VelibServiceLibrary
         /// <inheritdoc />
         public IList<Station> GetVelibStationsInCity(string city)
         {
-            VelibRequest request = new VelibRequest();
-            return request.getStationsForCity(city);
+            IList<Station> res = cache.checkStations(city);
+            if(res == null)
+            {
+                VelibRequest request = new VelibRequest();
+                res = request.getStationsForCity(city);
+                cache.cacheStations(city, res);
+            }
+            return res;
+            
         }
 
         /// <inheritdoc />
         public IList<String> GetCities()
         {
-            VelibRequest request = new VelibRequest();
-            return request.GetCities();
+            IList<String> result = cache.checkCities();
+            if(result == null)
+            {
+                VelibRequest request = new VelibRequest();
+                result =  request.GetCities();
+                cache.cacheCities(result);
+            }
+            return result;
+            
         }
 
         // <inheritdoc />
         public async Task<IList<string>> GetCitiesAsync()
         {
-            VelibRequest request = new VelibRequest();
-            IList<string> result = await request.GetCitiesAsync();
+            IList<String> result = cache.checkCities();
+            if (result == null)
+            {
+                VelibRequest request = new VelibRequest();
+                result = await request.GetCitiesAsync();
+                cache.cacheCities(result);
+            }
             return result;
         }
 
         // <inheritdoc />
         public async Task<IList<Station>> GetVelibStationsInCityAsync(string city)
         {
-            VelibRequest request = new VelibRequest();
-            IList<Station> stations = await request.getStationsForCityAsync(city);
-            return stations;
+            IList<Station> res = cache.checkStations(city);
+            if (res == null)
+            {
+                VelibRequest request = new VelibRequest();
+                res = await request.getStationsForCityAsync(city);
+                cache.cacheStations(city, res);
+            }
+            return res;
         }
 
         // <inheritdoc />

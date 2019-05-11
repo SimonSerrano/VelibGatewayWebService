@@ -67,6 +67,7 @@
     <Compile Include="IVelibService.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="requests\VelibRequest.cs" />
+    <Compile Include="utils\Cache.cs" />
     <Compile Include="VelibService.cs" />
   </ItemGroup>
   <ItemGroup>

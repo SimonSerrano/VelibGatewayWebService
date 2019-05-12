@@ -11,7 +11,6 @@ using VelibServiceLibrary.utils;
 
 namespace VelibServiceLibrary
 {
-    
     public class VelibService : IVelibService
     {
         private Cache cache = new Cache();
@@ -19,40 +18,43 @@ namespace VelibServiceLibrary
         /// <inheritdoc />
         public int GetVelibsAvailableForStation(string city, int station_number)
         {
-
-
             VelibRequest request = new VelibRequest();
             return request.getAvalaibleBikes(city, station_number);
         }
 
-        
+        public Station GetStationData(int station_number, string contract_name)
+        {
+            VelibRequest request = new VelibRequest();
+            return request.GetStationData(station_number, contract_name);
+        }
+
 
         /// <inheritdoc />
         public IList<Station> GetVelibStationsInCity(string city)
         {
             IList<Station> res = cache.checkStations(city);
-            if(res == null)
+            if (res == null)
             {
                 VelibRequest request = new VelibRequest();
                 res = request.getStationsForCity(city);
                 cache.cacheStations(city, res);
             }
+
             return res;
-            
         }
 
         /// <inheritdoc />
         public IList<String> GetCities()
         {
             IList<String> result = cache.checkCities();
-            if(result == null)
+            if (result == null)
             {
                 VelibRequest request = new VelibRequest();
-                result =  request.GetCities();
+                result = request.GetCities();
                 cache.cacheCities(result);
             }
+
             return result;
-            
         }
 
         // <inheritdoc />
@@ -65,6 +67,7 @@ namespace VelibServiceLibrary
                 result = await request.GetCitiesAsync();
                 cache.cacheCities(result);
             }
+
             return result;
         }
 
@@ -78,6 +81,7 @@ namespace VelibServiceLibrary
                 res = await request.getStationsForCityAsync(city);
                 cache.cacheStations(city, res);
             }
+
             return res;
         }
 

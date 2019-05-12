@@ -18,6 +18,7 @@ namespace VelibServiceLibraryHost
 
             // Step 2: Create a ServiceHost instance.
             ServiceHost selfHost = new ServiceHost(typeof(VelibService), baseAddress);
+          
 
             try
             {

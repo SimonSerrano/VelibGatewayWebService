@@ -13,11 +13,13 @@ namespace VelibServiceLibrary
 
         public int MeanRequestTime()
         {
-            return SaverLoader.ReadFromBinaryFile<Tuple<int, int>>(System.AppDomain.CurrentDomain + mean_request_time_path).Item2;
+            Tuple<int, int> res = SaverLoader.ReadFromBinaryFile<Tuple<int, int>>(System.AppDomain.CurrentDomain + mean_request_time_path);
+            return res == null ? 0 : res.Item2;
         }
 
         public int NumberOfRequest()
         {
+            
             return SaverLoader.ReadFromBinaryFile<int>(System.AppDomain.CurrentDomain + number_request_path);
         }
     }

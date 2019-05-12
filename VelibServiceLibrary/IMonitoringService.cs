@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 namespace VelibServiceLibrary
 {
     [ServiceContract]
-    interface IMonitoringService
+    public interface IMonitoringService
     {
 
         /// <summary>

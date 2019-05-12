@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace VelibServiceLibrary
 {
-    class MonitoringService : IMonitoringService
+    public class MonitoringService : IMonitoringService
     {
         private static readonly string mean_request_time_path = "/monitoring/mean_request_time";
         private static readonly string number_request_path = "/monitoring/num_request";

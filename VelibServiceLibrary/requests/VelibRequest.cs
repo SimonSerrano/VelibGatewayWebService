@@ -43,7 +43,7 @@ namespace VelibServiceLibrary.requests
             {
                 Console.WriteLine(e);
             }
-            IList<Station> res = ParseStation(city, result);
+            IList<Station> res = ParseStations(city, result);
             DateTime end = DateTime.Now;
             computeMeanRequestTime(end.Second - start.Second);
             return res;
@@ -52,12 +52,14 @@ namespace VelibServiceLibrary.requests
 
         public Station GetStationData(int station_number, string contract_name)
         {
+            increaseNumRequest();
             WebRequest request = WebRequest.Create("https://api.jcdecaux.com/vls/v1/stations/" + station_number +
                                                    "?contract=" + contract_name +
                                                    "&apiKey=" + API_KEY);
             StreamReader reader = null;
             WebResponse response = null;
             string result = "";
+            DateTime start = DateTime.Now;
             try
             {
                 response = request.GetResponse();
@@ -72,8 +74,10 @@ namespace VelibServiceLibrary.requests
             {
                 Console.WriteLine(e);
             }
-
-            return ParseStation(result);
+            DateTime end = DateTime.Now;
+            Station res = ParseStation(result);
+            computeMeanRequestTime(end.Second - start.Second);
+            return res;
         }
 
         /// <summary>

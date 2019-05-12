@@ -13,6 +13,8 @@ namespace VelibServiceLibrary.requests
     public class VelibRequest
     {
         private static readonly string API_KEY = "e561d2fbe2894d1a32eab3672038e981d98cda87";
+        private static readonly string mean_request_time_path = "/monitoring/mean_request_time";
+        private static readonly string number_request_path = "/monitoring/num_request";
     
 
         
@@ -24,10 +26,12 @@ namespace VelibServiceLibrary.requests
         /// <returns>the list of stations for the given city</returns>
         public IList<Station> getStationsForCity(string city)
         {
+            increaseNumRequest();
             WebRequest request = WebRequest.Create("https://api.jcdecaux.com/vls/v1/stations?contract_name=" + city + "&apiKey=" + API_KEY);
             StreamReader reader = null;
             WebResponse response = null;
             String result = "";
+            DateTime start = DateTime.Now;
             try
             {
                 response = request.GetResponse();
@@ -42,7 +46,10 @@ namespace VelibServiceLibrary.requests
             {
                 Console.WriteLine(e);
             }
-            return ParseStation(city,result);
+            IList<Station> res = ParseStation(city, result);
+            DateTime end = DateTime.Now;
+            computeMeanRequestTime(end.Second - start.Second);
+            return res;
 
         }
 
@@ -94,10 +101,12 @@ namespace VelibServiceLibrary.requests
         /// <returns>The list of cities</returns>
         public IList<string> GetCities()
         {
+            increaseNumRequest();
             WebRequest request = WebRequest.Create("https://api.jcdecaux.com/vls/v1/contracts?apiKey=" + API_KEY);
             StreamReader reader = null;
             WebResponse response = null;
             String result = "";
+            DateTime start = DateTime.Now;
             try
             {
                 response = request.GetResponse();
@@ -111,7 +120,11 @@ namespace VelibServiceLibrary.requests
             {
                 Console.WriteLine(e);
             }
-            return ParseCities(result);
+            IList<string> res = ParseCities(result);
+            DateTime end = DateTime.Now;
+            int second = (end.Second - start.Second);
+            computeMeanRequestTime(second);
+            return res;
         }
 
         /// <summary>
@@ -153,10 +166,12 @@ namespace VelibServiceLibrary.requests
         /// <returns>the number of available bikes at the given station in the given city</returns>
         public int getAvalaibleBikes(string city, int station_number)
         {
+            increaseNumRequest();
             WebRequest request = WebRequest.Create("https://api.jcdecaux.com/vls/v1/stations/" + station_number + "?contract=" + city + "&apiKey=" + API_KEY);
             StreamReader reader = null;
             WebResponse response = null;
             String result = "";
+            DateTime start = DateTime.Now;
             try
             {
                 response = request.GetResponse();
@@ -171,7 +186,10 @@ namespace VelibServiceLibrary.requests
             {
                 Console.WriteLine(e);
             }
-            return ParseAvailableBikes(result);
+            int res = ParseAvailableBikes(result);
+            DateTime end = DateTime.Now;
+            computeMeanRequestTime(end.Second - start.Second);
+            return res;
         }
 
         /// <summary>
@@ -203,6 +221,27 @@ namespace VelibServiceLibrary.requests
             }
             available_bikes = (int)jobject["available_bikes"];
             return available_bikes;
+        }
+
+        private void increaseNumRequest()
+        {
+            int num_request = SaverLoader.ReadFromBinaryFile<int>(System.AppDomain.CurrentDomain + number_request_path);
+            num_request += 1;
+            SaverLoader.WriteToBinaryFile<int>(System.AppDomain.CurrentDomain + number_request_path, num_request);
+        }
+
+        private void computeMeanRequestTime(int seconds)
+        {
+            Tuple<int, int> time = SaverLoader.ReadFromBinaryFile<Tuple<int, int>>(System.AppDomain.CurrentDomain + mean_request_time_path);
+            if (time == null)
+            {
+                time = new Tuple<int, int>(1, seconds);
+            }else
+            {
+                time = new Tuple<int, int>(time.Item1 + 1, (time.Item2 + seconds) / time.Item1);
+            }
+            SaverLoader.WriteToBinaryFile<Tuple<int, int>>(System.AppDomain.CurrentDomain + mean_request_time_path, time);
+
         }
     }
 }

@@ -18,6 +18,7 @@ namespace VelibServiceLibraryHost
 
             // Step 2: Create a ServiceHost instance.
             ServiceHost selfHost = new ServiceHost(typeof(VelibService), baseAddress);
+            ServiceHost selfHost2 = new ServiceHost(typeof(MonitoringService), baseAddress);
           
 
             try
@@ -27,13 +28,19 @@ namespace VelibServiceLibraryHost
 
                 selfHost.AddServiceEndpoint(typeof(IVelibService), new BasicHttpBinding(), "");
 
+                selfHost2.AddServiceEndpoint(typeof(IMonitoringService), new WSHttpBinding(), "MonitoringService");
+                selfHost2.AddServiceEndpoint(typeof(IVelibService), new BasicHttpBinding(), "");
+
                 // Step 4: Enable metadata exchange.
                 ServiceMetadataBehavior smb = new ServiceMetadataBehavior();
                 smb.HttpGetEnabled = true;
                 selfHost.Description.Behaviors.Add(smb);
 
+                selfHost2.Description.Behaviors.Add(smb);
+
                 // Step 5: Start the service.
                 selfHost.Open();
+                selfHost2.Open();
                 Console.WriteLine("The service is ready.");
 
                 // Close the ServiceHost to stop the service.
@@ -41,6 +48,7 @@ namespace VelibServiceLibraryHost
                 Console.WriteLine();
                 Console.ReadLine();
                 selfHost.Close();
+                selfHost2.Close();
             }
             catch (CommunicationException ce)
             {

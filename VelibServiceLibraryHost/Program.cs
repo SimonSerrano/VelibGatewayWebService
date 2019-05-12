@@ -15,10 +15,11 @@ namespace VelibServiceLibraryHost
         {
             // Step 1: Create a URI to serve as the base address.
             Uri baseAddress = new Uri("http://localhost:8000/Velib/");
+            Uri baseAddressMonitoring = new Uri("http://localhost:8000/Monitoring/");
 
             // Step 2: Create a ServiceHost instance.
             ServiceHost selfHost = new ServiceHost(typeof(VelibService), baseAddress);
-            ServiceHost selfHost2 = new ServiceHost(typeof(MonitoringService), baseAddress);
+            ServiceHost selfHost2 = new ServiceHost(typeof(MonitoringService), baseAddressMonitoring);
           
 
             try
@@ -29,7 +30,7 @@ namespace VelibServiceLibraryHost
                 selfHost.AddServiceEndpoint(typeof(IVelibService), new BasicHttpBinding(), "");
 
                 selfHost2.AddServiceEndpoint(typeof(IMonitoringService), new WSHttpBinding(), "MonitoringService");
-                selfHost2.AddServiceEndpoint(typeof(IVelibService), new BasicHttpBinding(), "");
+                selfHost2.AddServiceEndpoint(typeof(IMonitoringService), new BasicHttpBinding(), "");
 
                 // Step 4: Enable metadata exchange.
                 ServiceMetadataBehavior smb = new ServiceMetadataBehavior();

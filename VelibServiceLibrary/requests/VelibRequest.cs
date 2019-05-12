@@ -291,7 +291,7 @@ namespace VelibServiceLibrary.requests
             if (!Directory.Exists(AppDomain.CurrentDomain.BaseDirectory + number_request_dir))
                 Directory.CreateDirectory(AppDomain.CurrentDomain.BaseDirectory + number_request_dir);
             int num_request =
-                SaverLoader.ReadFromBinaryFile<int>(AppDomain.CurrentDomain.BaseDirectory + number_request_dir);
+                SaverLoader.ReadFromBinaryFile<int>(AppDomain.CurrentDomain.BaseDirectory + number_request_dir + number_request_file);
             num_request += 1;
             SaverLoader.WriteToBinaryFile<int>(
                 AppDomain.CurrentDomain.BaseDirectory + number_request_dir + number_request_file, num_request);

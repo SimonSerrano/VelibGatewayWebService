@@ -1,4 +1,5 @@
-﻿using System.IO;
+﻿using System;
+using System.IO;
 
 namespace VelibServiceLibrary
 {
@@ -13,6 +14,7 @@ namespace VelibServiceLibrary
         /// <param name="objectToWrite">Object to write</param>
         public static void WriteToBinaryFile<T>(string filePath, T objectToWrite)
         {
+            Console.WriteLine("Write in " + filePath);
             using (Stream stream = File.Open(filePath, FileMode.Create))
             {
                 var binaryFormatter = new System.Runtime.Serialization.Formatters.Binary.BinaryFormatter();
@@ -29,7 +31,9 @@ namespace VelibServiceLibrary
         public static T ReadFromBinaryFile<T>(string filePath)
         {
             if (!File.Exists(filePath))
+            {
                 return default(T);
+            }
 
             using (Stream stream = File.Open(filePath, FileMode.Open))
             {

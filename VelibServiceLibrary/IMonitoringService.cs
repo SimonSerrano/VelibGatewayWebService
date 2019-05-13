@@ -10,19 +10,19 @@ namespace VelibServiceLibrary
     [ServiceContract]
     public interface IMonitoringService
     {
-
         /// <summary>
         /// Request the mean request duration for every request
         /// </summary>
+        /// <param name="userIdHashed">user id hashed to check if he has the right to access data</param>
         /// <returns>the mean request time</returns>
         [OperationContract]
-        int MeanRequestTime();
+        int MeanRequestTime(string userIdHashed);
 
         /// <summary>
         /// Request the total number of requests made on the server
         /// </summary>
         /// <returns>the number of request</returns>
         [OperationContract]
-        int NumberOfRequest();
+        int NumberOfRequest(string userIdHashed);
     }
 }

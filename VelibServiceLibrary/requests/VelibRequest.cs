@@ -6,16 +6,13 @@ using System.Linq;
 using System.Net;
 using System.Threading.Tasks;
 using System.Web;
+using VelibServiceLibrary.utils;
 
 namespace VelibServiceLibrary.requests
 {
     public class VelibRequest
     {
         private static readonly string API_KEY = "e561d2fbe2894d1a32eab3672038e981d98cda87";
-        private static readonly string mean_request_time_dir = "monitoring\\";
-        private static readonly string mean_request_time_file = "mean_request_time";
-        private static readonly string number_request_dir = "monitoring\\";
-        private static readonly string number_request_file = "num_request";
 
 
         /// <summary>
@@ -49,7 +46,8 @@ namespace VelibServiceLibrary.requests
 
             IList<Station> res = ParseStations(city, result);
             DateTime end = DateTime.Now;
-            computeMeanRequestTime(end.Second - start.Second);
+            computeMeanRequestTime(end.Millisecond - start.Millisecond);
+            appendEvolutionTime(end.Millisecond - start.Millisecond);
             return res;
         }
 
@@ -80,7 +78,8 @@ namespace VelibServiceLibrary.requests
 
             DateTime end = DateTime.Now;
             Station res = ParseStation(result);
-            computeMeanRequestTime(end.Second - start.Second);
+            computeMeanRequestTime(end.Millisecond - start.Millisecond);
+            appendEvolutionTime(end.Millisecond - start.Millisecond);
             return res;
         }
 
@@ -188,8 +187,9 @@ namespace VelibServiceLibrary.requests
 
             IList<string> res = ParseCities(result);
             DateTime end = DateTime.Now;
-            int second = (end.Second - start.Second);
+            int second = (end.Millisecond - start.Millisecond);
             computeMeanRequestTime(second);
+            appendEvolutionTime(second);
             return res;
         }
 
@@ -256,7 +256,8 @@ namespace VelibServiceLibrary.requests
 
             int res = ParseAvailableBikes(result);
             DateTime end = DateTime.Now;
-            computeMeanRequestTime(end.Second - start.Second);
+            computeMeanRequestTime(end.Millisecond - start.Millisecond);
+            appendEvolutionTime(end.Millisecond - start.Millisecond);
             return res;
         }
 
@@ -291,22 +292,22 @@ namespace VelibServiceLibrary.requests
 
         private void increaseNumRequest()
         {
-            if (!Directory.Exists(AppDomain.CurrentDomain.BaseDirectory + number_request_dir))
-                Directory.CreateDirectory(AppDomain.CurrentDomain.BaseDirectory + number_request_dir);
+            if (!Directory.Exists(AppDomain.CurrentDomain.BaseDirectory + Constant.monitoring_dir))
+                Directory.CreateDirectory(AppDomain.CurrentDomain.BaseDirectory + Constant.monitoring_dir);
             int num_request =
-                SaverLoader.ReadFromBinaryFile<int>(AppDomain.CurrentDomain.BaseDirectory + number_request_dir + number_request_file);
+                SaverLoader.ReadFromBinaryFile<int>(AppDomain.CurrentDomain.BaseDirectory + Constant.monitoring_dir + Constant.number_request_file);
             num_request += 1;
             SaverLoader.WriteToBinaryFile<int>(
-                AppDomain.CurrentDomain.BaseDirectory + number_request_dir + number_request_file, num_request);
+                AppDomain.CurrentDomain.BaseDirectory + Constant.monitoring_dir + Constant.number_request_file, num_request);
         }
 
         private void computeMeanRequestTime(int seconds)
         {
-            if (!Directory.Exists(AppDomain.CurrentDomain.BaseDirectory + mean_request_time_dir))
-                Directory.CreateDirectory(AppDomain.CurrentDomain.BaseDirectory + mean_request_time_dir);
+            if (!Directory.Exists(AppDomain.CurrentDomain.BaseDirectory + Constant.monitoring_dir))
+                Directory.CreateDirectory(AppDomain.CurrentDomain.BaseDirectory + Constant.monitoring_dir);
 
             Tuple<int, int> time = SaverLoader.ReadFromBinaryFile<Tuple<int, int>>(
-                AppDomain.CurrentDomain.BaseDirectory + mean_request_time_dir + mean_request_time_file);
+                AppDomain.CurrentDomain.BaseDirectory + Constant.monitoring_dir + Constant.mean_request_time_file);
             if (time == null)
             {
                 time = new Tuple<int, int>(1, seconds);
@@ -317,7 +318,26 @@ namespace VelibServiceLibrary.requests
             }
 
             SaverLoader.WriteToBinaryFile<Tuple<int, int>>(
-                AppDomain.CurrentDomain.BaseDirectory + mean_request_time_dir + mean_request_time_file, time);
+                AppDomain.CurrentDomain.BaseDirectory + Constant.monitoring_dir + Constant.mean_request_time_file, time);
+        }
+
+        private void appendEvolutionTime(int seconds)
+        {
+            if (!Directory.Exists(AppDomain.CurrentDomain.BaseDirectory + Constant.monitoring_dir))
+                Directory.CreateDirectory(AppDomain.CurrentDomain.BaseDirectory + Constant.monitoring_dir);
+
+            IDictionary<DateTime, int> evolution = SaverLoader.ReadFromBinaryFile<IDictionary<DateTime, int>>(
+                AppDomain.CurrentDomain.BaseDirectory + Constant.monitoring_dir + Constant.request_time_evolution_file);
+            if(evolution == null)
+            {
+                evolution = new Dictionary<DateTime, int>();
+                evolution.Add(DateTime.Now, seconds);
+            }else
+            {
+                evolution.Add(DateTime.Now, seconds);
+            }
+            SaverLoader.WriteToBinaryFile <IDictionary<DateTime, int>>(
+                AppDomain.CurrentDomain.BaseDirectory + Constant.monitoring_dir + Constant.request_time_evolution_file, evolution);
         }
     }
 }

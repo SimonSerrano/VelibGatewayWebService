@@ -114,6 +114,7 @@ namespace VelibServiceLibrary.requests
                 string name = (string) ((JObject) array[i])["name"];
                 int available_bikes = (int) ((JObject) array[i])["available_bikes"];
                 int station_number = (int) ((JObject) array[i])["number"];
+                JObject position = (JObject)((JObject)array[i])["position"];
                 string station_status = (string) ((JObject) array[i])["status"];
                 string contract_name = (string) ((JObject) array[i])["contract_name"];
                 Console.WriteLine(name);
@@ -123,6 +124,8 @@ namespace VelibServiceLibrary.requests
                 station.StationNumber = station_number;
                 station.Status = station_status;
                 station.ContractName = contract_name;
+                station.Latitude = (float)(position)["lat"];
+                station.Longitude = (float)(position)["lng"];
                 res.Add(station);
             }
 

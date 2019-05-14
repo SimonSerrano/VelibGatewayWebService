@@ -54,6 +54,8 @@ namespace VelibServiceLibrary
         string contract_name = "unknown";
         int available_bikes = 0;
         int station_number = 0;
+        float longitude = 0.0f;
+        float latitude = 0.0f;
 
 
         [DataMember]
@@ -89,6 +91,20 @@ namespace VelibServiceLibrary
         {
             get => contract_name;
             set => contract_name = value;
+        }
+
+        [DataMember]
+        public float Longitude
+        {
+            get => longitude;
+            set => longitude = value;
+        }
+
+        [DataMember]
+        public float Latitude
+        {
+            get => latitude;
+            set => latitude = value;
         }
     }
 }

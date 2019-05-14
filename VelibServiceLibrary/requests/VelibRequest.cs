@@ -26,7 +26,7 @@ namespace VelibServiceLibrary.requests
         public IList<Station> getStationsForCity(string city)
         {
             increaseNumRequest();
-            WebRequest request = WebRequest.Create("https://api.jcdecaux.com/vls/v1/stations?contract_name=" + city +
+            WebRequest request = WebRequest.Create("https://api.jcdecaux.com/vls/v1/stations?contract=" + city +
                                                    "&apiKey=" + API_KEY);
             StreamReader reader = null;
             WebResponse response = null;
